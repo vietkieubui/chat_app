@@ -6,7 +6,7 @@ import { getFirestore } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
-import { connectAuthEmulator } from "firebase/auth";
+// import { connectAuthEmulator } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAVLJYr-uIyXxYpat-CS1S3aWpAzrXoOw0",
