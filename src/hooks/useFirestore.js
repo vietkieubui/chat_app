@@ -1,40 +1,48 @@
 import { useEffect, useState } from "react";
-import { query, orderBy,where, collection, onSnapshot } from "firebase/firestore";  
+import {
+  query,
+  orderBy,
+  where,
+  collection,
+  onSnapshot,
+} from "firebase/firestore";
 
-import { db } from '../firebase/config'
-
+import { db } from "../firebase/config";
 
 export const useFirestore = (collections, condition) => {
-    const [documents, setDocuments] = useState([]);
-    
-    useEffect(async () => {
-        let collectionRef = collection(db, collections);
-         collectionRef = query(collectionRef, orderBy('createdAt')) ;
-        /**condition
-         * {
-         *  fieldName: 'abc',
-         *  operator: '==',
-         *  compareValue: 'abc'
-         * }
-         * 
-         */
+  const [documents, setDocuments] = useState([]);
 
-        if(condition){
-            if(!condition.compareValue||!condition.compareValue.length){
-                return;
-            }
-            collectionRef =  query(collectionRef, where(condition.fieldName, condition.operator, condition.compareValue));
-        }
-        const unsubcribe = onSnapshot(collectionRef, (snapshot)=>{
-            const data = snapshot.docs.map((doc)=>({
-                ...doc.data(),
-                id: doc.id
-            }))
-            setDocuments(data)
-        });
+  useEffect(async () => {
+    let collectionRef = collection(db, collections);
+    collectionRef = query(collectionRef, orderBy("createdAt"));
+    /**condition
+     * {
+     *  fieldName: 'abc',
+     *  operator: '==',
+     *  compareValue: 'abc'
+     * }
+     *
+     */
 
-        return unsubcribe;
-    } , [collections, condition]);
-    
-    return documents;
-}
+    if (condition) {
+      if (!condition.compareValue || !condition.compareValue.length) {
+        return;
+      }
+      collectionRef = query(
+        collectionRef,
+        where(condition.fieldName, condition.operator, condition.compareValue)
+      );
+    }
+    const unsubcribe = onSnapshot(collectionRef, (snapshot) => {
+      const data = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setDocuments(data);
+    });
+
+    return unsubcribe;
+  }, [collections, condition]);
+
+  return documents;
+};
